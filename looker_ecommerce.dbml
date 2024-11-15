@@ -1,0 +1,111 @@
+Table distribution_centers {
+  id integer [primary key]
+  name string
+  latitude float
+  longitude float
+}
+
+Table events {
+  id integer [pk]
+  user_id integer [ref: > users.id]
+  sequence_number integer
+  session_id string
+  created_at datetime
+  ip_address string
+  city string
+  state string
+  postal_code string
+  browser string
+  traffic_source string
+  uri string
+  event_Type string
+}
+
+Table inventory_items {
+  id integer [pk]
+  product_id integer [ref: > products.id]
+  created_at datetime
+  sold_at datetime
+  cost float
+  product_category string
+  product_name string
+  product_brand string 
+  product_retail_price float
+  product_department dept
+  product_sku string
+  product_distribution_center_id integer [ref: > distribution_centers.id]
+}
+
+Table order_items {
+  id integer [pk]
+  order_id integer [ref: > orders.order_id]
+  user_id integer [ref: > users.id]
+  product_id integer [ref: > products.id]
+  inventory_item_id integer [ref: > inventory_items.id]
+  status status
+  created_at datetime
+  shipped_at datetime
+  delivered_at datetime
+  returned_at datetime
+  sale_price float
+}
+
+Table orders {
+  order_id integer [pk]
+  user_id integer [ref: > users.id]
+  status status
+  gender bool
+  created_at datetime
+  returned_at datetime
+  shipped_at datetime
+  delivered_at datetime
+  num_of_item integer
+}
+
+Table products {
+  id integer [pk]
+  cost float
+  category string
+  name string
+  brand string
+  retail_price float
+  department dept
+  sku string
+  distribution_center_id integer [ref: > distribution_centers.id]
+}
+
+Table users {
+  id integer [pk]
+  first_name string
+  last_name string
+  email string
+  age integer
+  gender gender
+  state string
+  street_address string
+  postal_code string
+  city string
+  country string
+  latitude float
+  longitude float
+  traffic_source string
+  created_at datetime
+}
+
+enum dept {
+  Women
+  Men
+}
+
+enum gender {
+  F
+  M
+}
+
+enum status {
+  Shipped
+  Complete
+  Processing
+  Cancelled
+  Returned
+}
